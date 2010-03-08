@@ -1,3 +1,73 @@
 # easy-doc - Write a document easily
 
-Write later.
+## Licence
+
+MIT Licence.
+
+(c) Sora Harakami
+
+>The MIT Licence {{{
+>Permission is hereby granted, free of charge, to any person obtaining a copy
+>of this software and associated documentation files (the "Software"), to deal
+>in the Software without restriction, including without limitation the rights
+>to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+>copies of the Software, and to permit persons to whom the Software is
+>furnished to do so, subject to the following conditions:
+>
+>The above copyright notice and this permission notice shall be included in
+>all copies or substantial portions of the Software.
+>
+>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+>IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+>FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+>AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+>LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+>OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+>THE SOFTWARE.
+>}}}
+
+## Install
+
+__Not available yet. I'll push soon :)__
+
+### Using rubygem
+
+    gem install easy-doc
+
+__NOTE:__ Gemcutter is needed.
+
+### Using git
+
+    git clone git://github.com/sorah/easy-doc.git
+
+and write following line your shell's rc-file:
+
+    export RUBYLIB=/path/to/easy-doc/lib:$RUBYLIB
+
+## Usage
+
+### Simple
+
+Simple directory structure:
+
+    doc/              -- documentation directory
+      mkd/            -- markdown directory
+        index.mkd     -- index
+        index.ja.mkd  -- index(ja)
+
+and run following command in doc directory:
+
+    easy-doc mkd html
+
+the easy-doc command render a markdown (in mkd directory) files to html directory.
+
+And new directory structure:
+
+    doc/              -- documentation directory
+      mkd/            -- markdown directory
+        index.mkd     -- index
+        index.ja.mkd  -- index(ja)
+        checksums     -- checksum data for re-rendering
+      html/           -- html directory. html is generate by easy-doc command.
+        index.html    -- index(rendered)
+        index.ja.html -- index(rendered)
