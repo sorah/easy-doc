@@ -1,0 +1,3 @@
+# easy-doc - Write a document easily
+
+Write later.
