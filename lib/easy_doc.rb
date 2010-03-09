@@ -1,0 +1,2 @@
+class EasyDoc
+end
