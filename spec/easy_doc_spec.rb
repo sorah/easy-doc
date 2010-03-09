@@ -15,7 +15,7 @@ describe EasyDoc do
   end
 
   it 'can take markdown files' do
-    @e.markdown_sizes[0].should match('index.mkd')
+    @e.markdown_files.should include('index.mkd')
   end
 
   it 'can render markdown file' do
