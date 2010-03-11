@@ -1,3 +1,4 @@
+require 'temp_dir' if RUBY_VERSION <= "1.8.6"
 require File.dirname(__FILE__) + '/../lib/easy_doc.rb'
 
 describe EasyDoc do

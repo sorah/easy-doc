@@ -81,6 +81,14 @@ MIT Licence.
 
 ## Develop
 
-If you have RSpec, You can run spec by this command:
+### Requirements
+
+* Ruby 1.8.7+
+  * __NOTE:__ If you're using less than ruby 1.8.6, install `temp_dir` gem to workable. but not supported.
+* RSpec
+
+### Usage
+
+You can run spec by this command:
 
     spec ./spec/easy_doc_spec.rb
