@@ -1,13 +1,11 @@
-require 'temp_dir' if RUBY_VERSION <= "1.8.6"
 require File.dirname(__FILE__) + '/../lib/easy_doc.rb'
+require 'tmpdir'
+require 'fileutils'
 
 describe EasyDoc do
   before(:all) do
-    @bpath = File.dirname(__FILE__) + "/#{Time.now.to_f.to_s.gsub(/\./,'')}_#{rand(10000)}"
-    @mpath = @bpath + '_mkd'
-    @hpath = @bpath + '_html'
-    Dir.mkdir(@mpath)
-    Dir.mkdir(@hpath)
+    @mpath = Dir.mktmpdir("#{Time.to_f.to_s.gsub(/\./,"")}_easy_doc_spec_mkd" )
+    @hpath = Dir.mktmpdir("#{Time.to_f.to_s.gsub(/\./,"")}_easy_doc_spec_html")
     open(@mpath+'/index.mkd','w') {|f| f.puts "# hi" }
   end
 
@@ -48,5 +46,10 @@ describe EasyDoc do
     end
     @e.render
     File.read(@hpath+'/index.html').should match("^q^")
+  end
+
+  after(:all) do
+    FileUtils.remove_entry_secure @mpath
+    FileUtils.remove_entry_secure @hpath
   end
 end

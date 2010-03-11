@@ -17,8 +17,8 @@ class EasyDoc
                    :default_lang => "default"
                  }
 
-    Yaml.parse_file(mkd_expand_path('config.yml'))) if File.exist?(mkd_expand_path('config.yml').each do |k,v|
-      @config[k.to_sym] = v
+    Yaml.parse_file(mkd_expand_path('config.yml')) if File.exist?(mkd_expand_path('config.yml').each do |k,v|
+    @config[k.to_sym] = v
     end
   end
 
