@@ -2,3 +2,8 @@
 #-*- coding: utf-8 -*-
 # vim: filetype=ruby
 require File.dirname(__FILE__) + '/../lib/easy_doc.rb'
+
+def a_argv(arg,options={})
+
+end
+a_argv(ARGV.shift)

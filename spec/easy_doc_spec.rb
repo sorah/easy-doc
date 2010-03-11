@@ -25,7 +25,7 @@ describe EasyDoc do
   end
 
   it 'can take checksums' do
-    File.exist?(@mpath+'/checksums').should be_true
+    File.exist?(@mpath+'/.easy-doc_checksums').should be_true
   end
 
   it 'can re-render edited markdown files' do
