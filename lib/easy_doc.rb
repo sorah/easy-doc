@@ -6,7 +6,7 @@ require 'erb'
 require 'pathname'
 
 class EasyDoc
-  class MakeDirectoryError < Execption; end
+  class MakeDirectoryError < Exception; end
 
   def initialize(mkd_path,html_path)
     raise ArgumentError, 'mkd_path is invalid' unless File.directory?(mkd_path) && html_path.kind_of?(String)
@@ -17,9 +17,9 @@ class EasyDoc
                    :default_lang => "default"
                  }
 
-    Yaml.parse_file(mkd_expand_path('config.yml')) if File.exist?(mkd_expand_path('config.yml').each do |k,v|
-    @config[k.to_sym] = v
-    end
+    YAML.parse_file(mkd_expand_path('config.yml')).each do |k,v|
+      @config[k.to_sym] = v
+    end if File.exist?(mkd_expand_path('config.yml'))
   end
 
   def changed_markdown_files(sv=true)
@@ -96,6 +96,10 @@ class EasyDoc
     end
   end
 
+  def markdown_files(lp=true)
+    Dir.glob("#{@mkd_path}/**/*.mkd").map{|x| lp ? mkd_local_path(x) : x }
+  end
+
 private
 
   def html_create_dir(p)
@@ -114,24 +118,23 @@ private
   end
 
   def render_file(f)
-    create_dir(f)
     mkd      = File.read(mkd_expand_path(f))
     title    = mkd.scan(/^# (.+)/).flatten[0]
     body     = Markdown.new(mkd).to_html
     body.gsub!(/<a href="(.+)">/) do |s|
       u = $1
       nu = if u =~ /^\//
-            Pathname.new(mkd_expand_path(u.gsub(/^\//,"")))
-                  \ .relative_path_from(File.dirname(f))
+            Pathname.new(mkd_expand_path(u.gsub(/^\//,""))) \
+                    .relative_path_from(File.dirname(f))
            else; u
            end
       '<a href="'+nu+'">'
     end
     t = File.basename(f)
     lang_bar_ary = []
-    Dir.glob("#{File.dirname(f)}/*.mkd")
-    \  .delete_if{|m| /#{Regexp.escape(File.basename(f))}(\.(.+))?\.mkd/ !~ m}
-    \  .map{|m| File.basename(m) }.each do |m|
+    Dir.glob("#{File.dirname(f)}/*.mkd") \
+       .delete_if{|m| /#{Regexp.escape(File.basename(f))}(\.(.+))?\.mkd/ !~ m} \
+       .map{|m| File.basename(m) }.each do |m|
       la = m.scan(/\.(.+)\.mkd$/).flatten
       l = la.size > 0 ? la[0] : @config[:default_lang]
       ls  = ""
@@ -167,25 +170,21 @@ private
       h = calcuate_checksums
     end
     open("#{@mkd_path}/.easy-doc_checksums",'w') do |f|
-      f.puts h.to_yaml.to_s
+      f.puts h.to_yaml
     end
     self
   end
 
   def load_checksums
     if File.exist?("#{@mkd_path}/.easy-doc_checksums")
-      Yaml.parse_file("#{@mkd_path}/.easy-doc_checksums")
+      YAML.load_file("#{@mkd_path}/.easy-doc_checksums")
     else
       {}
     end
   end
 
-  def markdown_files(lp=true)
-    Dir.glob("#{@mkd_path}/**/*.mkd").map{|x| lp ? mkd_local_path(x) : x }
-  end
-
   def mkd_local_path(path)
-    path.gsub(/^#{Regexp.escape(@mkd_path)}/,'')
+    path.gsub(/^#{Regexp.escape(@mkd_path)}\//,'')
   end
 
   def mkd_expand_path(path)
@@ -193,7 +192,7 @@ private
   end
 
   def html_local_path(path)
-    path.gsub(/^#{Regexp.escape(@html_path)}/,'')
+    path.gsub(/^#{Regexp.escape(@html_path)}\//,'')
   end
 
   def html_expand_path(path)

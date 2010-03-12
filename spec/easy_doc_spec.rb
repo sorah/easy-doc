@@ -4,8 +4,8 @@ require 'fileutils'
 
 describe EasyDoc do
   before(:all) do
-    @mpath = Dir.mktmpdir("#{Time.to_f.to_s.gsub(/\./,"")}_easy_doc_spec_mkd" )
-    @hpath = Dir.mktmpdir("#{Time.to_f.to_s.gsub(/\./,"")}_easy_doc_spec_html")
+    @mpath = Dir.mktmpdir("#{Time.now.to_f.to_s.gsub(/\./,"")}_easy_doc_spec_mkd" )
+    @hpath = Dir.mktmpdir("#{Time.now.to_f.to_s.gsub(/\./,"")}_easy_doc_spec_html")
     open(@mpath+'/index.mkd','w') {|f| f.puts "# hi" }
   end
 
@@ -30,7 +30,7 @@ describe EasyDoc do
   it 'can re-render edited markdown files' do
     open(@mpath+'/index.mkd','w') {|f| f.puts "# hi\n('.v.')" }
     @e.render
-    File.read(@hpath+'/index.html').should match("<p>('.v.')</p>")
+    File.read(@hpath+'/index.html').should match("<p>\\('\\.v\\.'\\)</p>")
   end
 
   it 'can render with layout file' do
@@ -44,8 +44,9 @@ describe EasyDoc do
 </html>
       EOF
     end
+    open(@mpath+'/index.mkd','w') {|f| f.puts "# yey\n('.v.')" }
     @e.render
-    File.read(@hpath+'/index.html').should match("^q^")
+    File.read(@hpath+'/index.html').should match("\\^q\\^")
   end
 
   after(:all) do
