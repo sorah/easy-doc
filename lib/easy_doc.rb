@@ -22,28 +22,9 @@ class EasyDoc
     end if File.exist?(mkd_expand_path('config.yml'))
   end
 
-  def changed_markdown_files(sv=true)
-    n = calcuate_checksums
-    o = load_checksums
-    r = []
-    n.each do |f,c| # exists file
-      if o[f] != c
-        r << f
-      end
-    end
-    save_checksums(n) if sv
-    r + (n.keys - o.keys)
-  end
-
   def render(quiet=true,force=false)
     puts "Checking changed markdown files..." unless quiet
     f = force ? markdown_files : changed_markdown_files
-    unless quiet
-      puts "Changed/Created files:"
-      f.each do |n|
-        puts "  #{n}"
-      end
-    end
     f.each do |n|
       puts "Rendering: #{n}" unless quiet
       render_file(n)
@@ -55,7 +36,7 @@ class EasyDoc
     if File.exist?("#{@mkd_path}/layout.erb")
       File.read("#{@mkd_path}/layout.erb")
     else
-      ### Default binding ###
+      ### Default layout  ###
       return <<-EOB
 <html>
   <head>
@@ -198,4 +179,19 @@ private
   def html_expand_path(path)
     @html_path + '/' + path.gsub(/^\//,'')
   end
+
+  def changed_markdown_files(sv=true)
+    n = calcuate_checksums
+    o = load_checksums
+    r = []
+    n.each do |f,c| # exists file
+      if o[f] != c
+        r << f
+      end
+    end
+    save_checksums(n) if sv
+    r + (n.keys - o.keys)
+  end
+
+
 end
