@@ -15,13 +15,13 @@ describe EasyDoc do
   end
 
   describe '#markdown_files' do
-    it 'can take markdown files' do
+    it 'take markdown files' do
       @e.markdown_files.should include('index.mkd')
     end
   end
 
   describe '#init_config' do
-    it 'can reload config' do
+    it 'reload config' do
       open(@mpath+"/config.yml",'w') do |f|
         f.puts 'piyo: foobar'
       end
@@ -31,7 +31,7 @@ describe EasyDoc do
   end
 
   describe '#render' do
-    it 'can render markdown file' do
+    it 'render markdown file' do
       @e.render
       File.exist?(@hpath+'/index.html').should be_true
       File.read(@hpath+'/index.html').should   match('<h1>hi</h1>')
@@ -48,20 +48,20 @@ describe EasyDoc do
       t.should == File.mtime("#{@hpath}/index.html")
     end
 
-    it 'can re-render edited markdown files' do
+    it 're-render edited markdown files' do
       open(@mpath+'/index.mkd','w') {|f| f.puts "# hi\n\n('.v.')" }
       @e.render
       File.read(@hpath+'/index.html').should match("<p>\\('\\.v\\.'\\)</p>")
     end
 
-    it 'can force render' do
+    it 'force render' do
       t = File.mtime("#{@hpath}/index.html")
       sleep 1 # TODO: Refactoring this.
       @e.render(true,true)
       t.should < File.mtime("#{@hpath}/index.html")
     end
 
-    it 'can render with layout file' do
+    it 'render with layout file' do
       open(@mpath+'/layout.erb','w') do |f|
         f.puts <<-EOF
 <html>
@@ -77,7 +77,7 @@ describe EasyDoc do
       FileUtils.rm(@mpath+'/layout.erb')
     end
 
-    it 'can put messages' do
+    it 'put messages' do
       g, $stdout = IO.pipe
       t = Thread.new do
         ["Checking changed markdown files","Rendering: index.mkd"].each do |m|
@@ -90,7 +90,7 @@ describe EasyDoc do
       $stdout = STDOUT
     end
 
-    it 'can render multiple languages' do
+    it 'render multiple languages' do
       open(@mpath+'/index.ja.mkd','w') do |f|
         f.puts "# Konnnitiha."
       end
@@ -99,7 +99,7 @@ describe EasyDoc do
       File.read(@hpath+'/index.html').should match('<a href="index.ja.html">ja</a>')
     end
 
-    it 'can set default languages' do
+    it 'set default languages' do
       open(@mpath+'/config.yml','w') do |f|
         f.puts "default_lang: en"
       end
@@ -109,7 +109,7 @@ describe EasyDoc do
       File.read(@hpath+'/index.html').should match('en')
     end
 
-    it 'can generate relative path in <a>' do
+    it 'generate relative path in <a>' do
       Dir.mkdir(@mpath+'/foo').should == 0
       File.exist?(@mpath+'/foo').should be_true
       open(@mpath+'/foo/bar.mkd','w') do |f|
