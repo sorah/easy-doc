@@ -108,6 +108,15 @@ class EasyDoc
     Dir.glob("#{@mkd_path}/**/*.mkd").map{|x| lp ? mkd_local_path(x) : x }
   end
 
+  def delete_htmls(quiet=true)
+    fs = deleted_markdown_files
+    fs.each do |f|
+      h = f.gsub(/\.mkd$/,'.html')
+      puts "Removing: #{h}" unless quiet
+      FileUtils.remove(html_expand_path(h))
+    end
+  end
+
   attr_reader :config
 
 private
@@ -258,4 +267,10 @@ private
     h
   end
 
+  def deleted_markdown_files(sv=false)
+    n = calcuate_checksums
+    o = load_checksums
+    save_checksums(n) if sv
+    o.keys - n.keys
+  end
 end
