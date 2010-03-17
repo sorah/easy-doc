@@ -110,12 +110,13 @@ describe EasyDoc do
     end
 
     it 'can generate relative path in <a>' do
-      Dir.mkdir(@mpath+'/foo')
-      open(@mpath+'/foo/bar.mkd') do |f|
+      Dir.mkdir(@mpath+'/foo').should == 0
+      File.exist?(@mpath+'/foo').should be_true
+      open(@mpath+'/foo/bar.mkd','w') do |f|
         f.puts "# Foo\n\n# bar\n\n cool"
       end
       open(@mpath+'/index.mkd','w') {|f| f.puts "# hi\n\n[foobar!](/foo/bar.mkd)" }
-      @e.render
+      @e.render(true,true)
       File.read(@hpath+'index.html').should match('<a href="\./foo/bar.html">')
     end
   end

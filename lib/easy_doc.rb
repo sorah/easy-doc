@@ -113,19 +113,7 @@ class EasyDoc
 private
 
   def html_create_dir(p)
-    f = p.split(/\//)
-    f.pop
-    return if f.length < 2
-    f.length.times do |i|
-      next if i < 2
-      pp = html_expand_path(f[0..i].join('/'))
-      p pp
-      if File.exist?(pp)
-        raise MakeDirectoryError, "#{pp} isn't directory" unless File.directory?(pp)
-      else
-        Dir.mkdir(pp)
-      end
-    end
+    FileUtils.mkdir_p(html_expand_path(p).gsub(/\/[^\/]+$/,""))
   end
 
   def render_file(f,force_other_lang=false)
