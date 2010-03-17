@@ -28,6 +28,7 @@ def option_loop(arg,options={})
   else
     if options[:mkd_dir].nil?
       options[:mkd_dir] = arg
+      abort "ERROR: markdown dir not exist!" unless File.exist?(options[:mkd_dir])
     elsif options[:html_dir].nil?
       options[:html_dir] = arg
     end
@@ -41,13 +42,16 @@ def option_loop(arg,options={})
       abort "ERROR: markdown dir not specified."
     end
     options[:html_dir] = options[:mkd_dir] unless options[:html_dir]
+    options
   end
 end
 
 # kick loop
-o = option_argv(ARGV.shift,
+o = option_loop(ARGV.shift,
                 {
                   :force => false,
                   :quiet => false
                 })
-p o
+# Run
+e = EasyDoc.new(o[:mkd_dir],o[:html_dir])
+e.render(o[:quiet],o[:force])
