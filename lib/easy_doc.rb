@@ -69,6 +69,18 @@ class EasyDoc
   <head>
     <title><%= title %></title>
     <style type="text/css">
+      body {
+        font-family: sans-serif;
+        font-size: 18px;
+      }
+
+      h1 { font-size: 28px; }
+      h2 { font-size: 26px; }
+      h3 { font-size: 24px; }
+      h4 { font-size: 22px; }
+      h5 { font-size: 20px; }
+      h6 { font-size: 17px; }
+
       .header {
         padding-bottom: 10px;
         border-bottom: 1px solid gray;
@@ -77,11 +89,11 @@ class EasyDoc
 
       .lang_bar {
         text-align: right;
-        text-size: 11px;
+        font-size: 13px;
       }
 
       .title {
-        text-size: 24px;
+        font-size: 24px;
         margin-top: 5px;
       }
     </style>
@@ -92,7 +104,7 @@ class EasyDoc
       <div class="lang_bar">
         <%= lang_bar %>
       </div>
-      <span class="title"><%= title %></span>
+      <!--<div class="title"><%= title %></div>-->
     </div>
     <div class="doc_body">
       <%= body %>
