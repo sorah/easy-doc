@@ -7,6 +7,7 @@ begin
     gemspec.homepage = "http://github.com/sorah/easy-doc"
     gemspec.description = "Write a document easily. Write a document, run command to rendering."
     gemspec.authors = ["Sora Harakami"]
+    gemspec.add_dependency 'rpeg-markdown'
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
