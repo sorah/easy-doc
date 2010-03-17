@@ -3,7 +3,51 @@
 # vim: filetype=ruby
 require File.dirname(__FILE__) + '/../lib/easy_doc.rb'
 
-def a_argv(arg,options={})
+def show_help_and_exit
+  puts <<-EOH
+Usage: #{$0} [--force] [--quiet] [--help] [-f] [-q] [-h] (MARKDOWN_DIR HTML_DIR|MARKDOWN_AND_HTML_DIR)
 
+    --force, -f           | Force update
+    --quiet, -q           | Don't put anything
+    --help ,-h            | Show this message
+    MARKDOWN_AND_HTML_DIR | Read markdown file and export html file here.
+    MARKDOWN_DIR          | Read markdown files from here.
+    HTML_DIR              | Export html files here.
+  EOH
+  exit
 end
-a_argv(ARGV.shift)
+
+def option_loop(arg,options={})
+  case arg
+  when '--force','-f'
+    options[:force] = true
+  when '--quiet','-q'
+    options[:quiet] = true
+  when '--help' ,'-h', nil
+    show_help_and_exit
+  else
+    if options[:mkd_dir].nil?
+      options[:mkd_dir] = arg
+    elsif options[:html_dir].nil?
+      options[:html_dir] = arg
+    end
+  end
+
+  na = ARGV.shift
+  unless na.nil? # loop
+    option_loop(na,options)
+  else # exit loop
+    unless options[:mkd_dir]
+      abort "ERROR: markdown dir not specified."
+    end
+    options[:html_dir] = options[:mkd_dir] unless options[:html_dir]
+  end
+end
+
+# kick loop
+o = option_argv(ARGV.shift,
+                {
+                  :force => false,
+                  :quiet => false
+                })
+p o
