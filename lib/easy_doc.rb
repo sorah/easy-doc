@@ -124,8 +124,11 @@ private
       u = $1
       nu =
         if /^\// =~ u
-          Pathname.new(mkd_expand_path(u.gsub(/^\//, ''))).
-            relative_path_from(File.dirname(f))
+          Pathname(mkd_expand_path(u)) \
+            .relative_path_from( \
+              Pathname(mkd_expand_path(File.dirname(f)
+                                       .gsub(/\/\.$/,'')))).to_s \
+            .gsub(/\.mkd$/,'.html')
         else
           u
         end

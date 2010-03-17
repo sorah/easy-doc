@@ -117,7 +117,7 @@ describe EasyDoc do
       end
       open(@mpath+'/index.mkd','w') {|f| f.puts "# hi\n\n[foobar!](/foo/bar.mkd)" }
       @e.render(true,true)
-      File.read(@hpath+'index.html').should match('<a href="\./foo/bar.html">')
+      File.read(@hpath+'/index.html').should match("<a href='foo/bar.html'>")
     end
   end
 
