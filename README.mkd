@@ -1,13 +1,15 @@
 # easy-doc - Write a document easily
 
+## Description
+
+easy-doc can write a document more easily step.
+
 ## Requirements
 
 * Ruby (I'm debugging in 1.9.1)
 * rpeg-markdown
 
 ## Install
-
-__Not available yet. I'll push soon :)__
 
 ### Using rubygem
 
