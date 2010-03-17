@@ -122,12 +122,14 @@ private
     body     = Markdown.new(mkd).to_html
     body.gsub!(/<a href="(.+)">/) do |s|
       u = $1
-      nu = if u =~ /^\//
-            Pathname.new(mkd_expand_path(u.gsub(/^\//,""))) \
-                    .relative_path_from(File.dirname(f))
-           else; u
-           end
-      '<a href="'+nu+'">'
+      nu =
+        if /^\// =~ u
+          Pathname.new(mkd_expand_path(u.gsub(/^\//, ''))).
+            relative_path_from(File.dirname(f))
+        else
+          u
+        end
+      "<a href='#{nu}'>"
     end
     t = File.basename(f)
     lang_bar_ary = []
