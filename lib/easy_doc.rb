@@ -141,7 +141,7 @@ private
     mkd      = File.read(mkd_expand_path(f))
     title    = mkd.scan(/^# (.+)/).flatten[0]
     body     = Markdown.new(mkd).to_html
-    body.gsub!(/<a href="(.+)">/) do |s|
+    body.gsub!(/<a href="(.+?)">/) do |s|
       u = $1
       nu =
         if /^\// =~ u
